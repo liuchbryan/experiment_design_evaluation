@@ -36,6 +36,23 @@ class BinarySampler(Sampler):
         return np.random.binomial(n=1, p=self.p, size=self.n)
 
 
+class NormalSampler(Sampler):
+    def __init__(self, n: int, mu: float, sigma_sq: float):
+        super().__init__()
+        self.n = n
+        self.mu = mu
+        self.sigma_sq = sigma_sq
+        
+    def theoretical_mean(self) -> float:
+        return self.mu
+
+    def theoretical_variance(self) -> float:
+        return self.sigma_sq
+
+    def get_samples(self) -> np.array:
+        return np.random.normal(self.mu, np.sqrt(self.sigma_sq), size=self.n)
+
+
 class SpendSampler(Sampler):
     def __init__(self, n: int, p: float, mu: float, sigma_sq: float):
         super().__init__()

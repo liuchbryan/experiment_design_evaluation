@@ -80,14 +80,14 @@ class BootstrapMeanEvaluation(ABC):
         for init_sample in range(0, self.n_init_samples):
             self.initial_samples.append(self.get_initial_sample())
 
-            if verbose and (init_sample % (self.n_init_samples // 10) == 0):
+            if verbose and ((self.n_init_samples < 50) or ((init_sample + 1) % (self.n_init_samples // 50) == 0)):
                 print(f"Initial sample: {init_sample + 1}/{self.n_init_samples}", end="\r")
 
         for bootstrap_sample in range(0, self.n_bootstrap_mean_samples):
             self.bootstrap_mean_samples.append(
                 np.mean(np.random.choice(self.initial_samples, size=len(self.initial_samples), replace=True)))
 
-            if verbose and (bootstrap_sample % (self.n_bootstrap_mean_samples // 10) == 0):
+            if verbose and ((bootstrap_sample + 1) % (self.n_bootstrap_mean_samples // 10) == 0):
                 print(f"Bootstrap sample: {bootstrap_sample + 1}/{self.n_bootstrap_mean_samples}", end='\r')
 
 

@@ -53,8 +53,10 @@ class TestSimulatedPowerBRR:
         p = 0.5
         crit_val = 1.96 * np.sqrt(p * (1 - p) / n)
         assert(
-            ed._simulated_power_BRR(effect=crit_val, group_a_n=n, group_a_p=p,
-                                    null_critical_value=crit_val, n_alt_metric_samples=1000) ==
+            ed.AllSampleBRRED(p_C0=0, p_C1=0, p_I1=0, p_C2=0, p_I2=0,
+                              p_C3=p, p_Iphi=p, p_Ipsi=p,
+                              n_0=0, n_1=0, n_2=0, n_3=n, alpha=0.05, pi_min=0.8)
+            ._simulated_power(effect=crit_val, null_critical_value=crit_val, n_alt_metric_samples=1000) ==
             pytest.approx(0.5, 0.1)      # 0.5 +/- 0.05
         )
 
@@ -65,9 +67,11 @@ class TestSimulatedPowerBRR:
         crit_val = 1.96 * np.sqrt(p * (1 - p) / n)
         effect = (1.96 - (-0.84)) * np.sqrt(p * (1 - p) / n)
         assert(
-            ed._simulated_power_BRR(effect=effect, group_a_n=n, group_a_p=p,
-                                    null_critical_value=crit_val, n_alt_metric_samples=1000) ==
-            pytest.approx(0.8, 0.125)      # 0.8 +/- 0.1
+            ed.AllSampleBRRED(p_C0=0, p_C1=0, p_I1=0, p_C2=0, p_I2=0,
+                              p_C3=p, p_Iphi=p, p_Ipsi=p,
+                              n_0=0, n_1=0, n_2=0, n_3=n, alpha=0.05, pi_min=0.8)
+            ._simulated_power(effect=effect, null_critical_value=crit_val, n_alt_metric_samples=1000) ==
+            pytest.approx(0.8, 0.5)      # 0.8 +/- 0.1
         )
 
     def test_function_warns_user_for_low_power_samples(self):
@@ -77,8 +81,10 @@ class TestSimulatedPowerBRR:
             p = 0.5
             crit_val = 1.96 * np.sqrt(p * (1 - p) / n)
             effect = (1.96 - 0.84) * np.sqrt(p * (1 - p) / n)
-            ed._simulated_power_BRR(effect=effect, group_a_n=n, group_a_p=p,
-                                    null_critical_value=crit_val, n_alt_metric_samples=1000)
+            ed.AllSampleBRRED(p_C0=0, p_C1=0, p_I1=0, p_C2=0, p_I2=0,
+                              p_C3=p, p_Iphi=p, p_Ipsi=p,
+                              n_0=0, n_1=0, n_2=0, n_3=n, alpha=0.05, pi_min=0.8) \
+            ._simulated_power(effect=effect, null_critical_value=crit_val, n_alt_metric_samples=1000)
 
 
 class TestBinaryResponseRateEDInit:
@@ -89,50 +95,65 @@ class TestBinaryResponseRateEDInit:
             ed.AllSampleBRRED(p_C0=-0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=-0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=-0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=-0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=-0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=-0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=-0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=-0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
 
-            # Make each p >1 in turn
+        # Make each p>1 in turn
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=1.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=1.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=1.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=1.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=1.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=1.6, p_Iphi=0.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=1.7, p_Ipsi=0.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
+        with pytest.raises(ValueError):
             ed.AllSampleBRRED(p_C0=0.1, p_C1=0.2, p_I1=0.3, p_C2=0.4, p_I2=0.5,
                               p_C3=0.6, p_Iphi=0.7, p_Ipsi=1.8,
                               n_0=1, n_1=2, n_2=3, n_3=4, alpha=0.05, pi_min=0.8)
@@ -142,6 +163,7 @@ class TestBinaryResponseRateEDMDESizeSample:
     def test_function_gives_expected_result(self):
         # For binary response rates, MDE of an experiment is given by
         # (z_{1-alpha/2} - z_{1-pi_min}) * sqrt(2 * p(1-p)/n)
+        # where p is the response rate, and n is the sample size of one group
         # For alpha=0.05 and pi_min=0.8, z_{1-alpha/2}=1.96 and z_{1-pi_min}= -0.84
         p = 0.5
         n = 100
@@ -149,15 +171,15 @@ class TestBinaryResponseRateEDMDESizeSample:
         pi_min = 0.8
 
         # Using AllSampleBRRED as it is the first concrete class
-        # Only the params `alpha` and `pi_min` matter here
-        design = ed.AllSampleBRRED(p_C0=0.1, p_C1=0.1, p_I1=0.1, p_C2=0.1, p_I2=0.1,
-                                   p_C3=0.1, p_Iphi=0.1, p_Ipsi=0.1,
-                                   n_0=1, n_1=1, n_2=1, n_3=1, alpha=alpha, pi_min=pi_min)
+        # The size for n_3 is set to 2n so that each of analysis groups A and B will get n group 3 samples
+        design = ed.AllSampleBRRED(p_C0=0, p_C1=0, p_I1=0, p_C2=0, p_I2=0,
+                                   p_C3=p, p_Iphi=p, p_Ipsi=p,
+                                   n_0=0, n_1=0, n_2=0, n_3=2*n, alpha=alpha, pi_min=pi_min)
 
+        # Allow 10% error each way as the sampling exists to validate the theoretical quantity
+        # and the test is to make sure there are no major bugs in the code
         assert(
-            # Allow 10% error each way as the sampling exists to validate the theoretical quantity
-            # and the test is to make sure there are no major bugs in the code
-            design._mde_size_sample(n, p, n_null_metric_samples=1000, n_alt_metric_samples=200) ==
+            design._mde_size_sample(n_null_metric_samples=1000, n_alt_metric_samples=200) ==
             pytest.approx((1.96 - (-0.84)) * np.sqrt(2 * p * (1-p) / n), 0.1)
         )
 
