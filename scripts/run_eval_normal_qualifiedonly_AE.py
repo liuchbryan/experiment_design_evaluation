@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 design3_actual_effect_evaluations = []
 for run in range(0, args.num_evals):
-    print(f"Processing run {run+1}/{args.num_evals}...")
+    print(f"Processing run {run+1}/{args.num_evals}...", end='\r')
 
     design3 = (
         QualifiedOnlyNRED(
@@ -53,7 +53,7 @@ for run in range(0, args.num_evals):
     design3_actual_effect_evaluation = (
         EDActualEffectEvaluation(design3, n_init_samples=args.num_init_samples,
                                  n_bootstrap_mean_samples=args.num_bootstrap_samples))
-    design3_actual_effect_evaluation.run(verbose=True)
+    design3_actual_effect_evaluation.run(verbose=False)
     design3_actual_effect_evaluations.append(design3_actual_effect_evaluation)
 
 save_bootstrap_mean_evaluation_collection(

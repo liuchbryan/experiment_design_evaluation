@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 design1_actual_effect_evaluations = []
 for run in range(0, args.num_evals):
-    print(f"Processing run {run+1}/{args.num_evals}...")
+    print(f"Processing run {run+1}/{args.num_evals}...", end='\r')
 
     design1 = (
         IntersectionOnlyNRED(
@@ -53,7 +53,7 @@ for run in range(0, args.num_evals):
     design1_actual_effect_evaluation = (
         EDActualEffectEvaluation(design1, n_init_samples=args.num_init_samples,
                                  n_bootstrap_mean_samples=args.num_bootstrap_samples))
-    design1_actual_effect_evaluation.run(verbose=True)
+    design1_actual_effect_evaluation.run(verbose=False)
     design1_actual_effect_evaluations.append(design1_actual_effect_evaluation)
 
 save_bootstrap_mean_evaluation_collection(
