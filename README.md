@@ -59,8 +59,8 @@ pip install -U pipenv
 
 ## Download the repository and sync the environment
 ```
-git clone https://github.com/anonymous-authors1234/ranking_under_lower_uncertainty.git
-cd ranking_under_lower_uncertainty
+git clone https://github.com/liuchbryan/experiment_design_evaluation.git
+cd experiment_design_evaluation
 
 # Switch to Python 3.7.3 for pyenv
 pyenv local 3.7.3
