@@ -6,7 +6,18 @@ This repository contain the code and supplementary documents used in the paper
 
 which is due to appear in [AdKDD 2020 Workshop](https://www.adkdd.org/), 
 in conjunction with SIGKDD'20 (San Diego, CA, now online due to the COVID-19 pandemic).
-We will update the page with a BibTeX citation once it becomes available.
+Please cite the pre-print paper as (BibTeX):
+
+```
+@misc{liu2020evaluation,
+    title={An Evaluation Framework for Personalization Strategy Experiment Designs},
+    author={C. H. Bryan Liu and Emma J. McCoy},
+    year={2020},
+    eprint={2007.11638},
+    archivePrefix={arXiv},
+    primaryClass={stat.ME}
+}
+```
 
 Quick navigation:
 - [Setup](#Setup)
