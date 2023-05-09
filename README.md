@@ -1,4 +1,4 @@
-# Experiment Design Evaluation
+# Personalization Experiment Design Evaluation
 
 This repository contain the code and supplementary documents used in the paper
 
@@ -108,6 +108,6 @@ poetry run jupyter notebook
 ```
 
 # Miscellaneous files
-`mathematical_derivations.pdf` contains the detailed mathematical derivations not featured in the paper for brevity.
-`98_exploration_binary_response.ipynb` and `99_exploration_misc.ipynb` contain experimental/exploration code
+* `supplementary_document.pdf` contains the detailed mathematical derivations not featured in the paper for brevity. It can also be viewed on https://arxiv.org/pdf/2007.11638.pdf after the main text.
+* `98_exploration_binary_response.ipynb` and `99_exploration_misc.ipynb` contain experimental/exploration code
 as part of the ongoing research.
