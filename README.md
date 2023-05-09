@@ -28,7 +28,7 @@ Quick navigation:
 This file assumes you have access to a *nix-like machine (both MacOS or
 Linux would do).
 
-The projects uses `pyenv` and `pipenv` for package management.
+The projects uses `pyenv` and `poetry` for package management.
 Before you start, **please ensure you have `gcc`, `make`, and `pip` installed**.
 
 ## Installing `pyenv`
@@ -38,7 +38,7 @@ For Linux (together with other required libraries):
 ``` bash
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git
 wget -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
 chmod u+x pyenv-installer
@@ -59,38 +59,43 @@ eval "$(pyenv virtualenv-init -)"
 
 ...and install the right Python version for our environment:
 ```
-pyenv install 3.7.3
+pyenv install 3.11.3
 ```
 
-## Installing `pipenv`
-Install pipenv using `pip` (or `pip3`):
-```
-pip install -U pipenv
-```
+## Installing `poetry`
+See https://python-poetry.org/docs/#installation for the installation instructions.
+
 
 ## Download the repository and sync the environment
 ```
 git clone https://github.com/liuchbryan/experiment_design_evaluation.git
 cd experiment_design_evaluation
 
-# Switch to Python 3.7.3 for pyenv
-pyenv local 3.7.3
-pipenv update --dev
+# Switch to Python 3.11.3 for pyenv
+pyenv local 3.11.3
+poetry env use ~/.pyenv/versions/3.11.3/bin/python
+poetry install
 ```
 
 # Running the experiments
 To run the evaluations described in Section 4 of the paper, replace `<script_name>` with the name of the 
-script found in the `script` directory (e.g. `run_eval_normal_allsamples_MDES`), and run either
+script found in the `script` directory (e.g. `run_eval_normal_intersectiononly_AE`), and run either
 
 ```bash
-pipenv run python -m scripts.<script_name>
+poetry run python -m scripts.<script_name>
+
+# For example (Setup 1, actual effect)
+# poetry run python -m scripts.run_eval_normal_intersectiononly_AE
 ```
 
 or
 
 ```bash
-pipenv shell
+poetry shell
 python -m scripts.<script_name>
+
+# For example (Setup 1, actual effect)
+# python -m scripts.run_eval_normal_intersectiononly_AE
 ```
 
 The outputs are stored in the `output` directory (where we have pre-populated with the pickle files
@@ -99,7 +104,7 @@ They can be analyzed using the Jupyter notebook `04_evaluate_theoretical_values.
 using the command
 
 ```bash
-pipenv run jupyter notebook
+poetry run jupyter notebook
 ```
 
 # Miscellaneous files
